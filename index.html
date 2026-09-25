@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>auditredact</title>
+<style>body{font-family:system-ui,sans-serif;margin:24px;max-width:960px}
+textarea{width:100%;height:150px;font-family:ui-monospace,monospace}
+button{padding:6px 12px;margin:8px 8px 8px 0}pre{background:#f6f6f6;padding:10px;border-radius:6px;overflow:auto}
+.ok{color:#0a7}.bad{color:#c00}</style>
+</head>
+<body>
+<h1>auditredact 工作台</h1>
+<p>改样例里的文本、脱敏规则与白名单再点运行，结果给脱敏结果、命中数与幂等判定。</p>
+<textarea id="input">{
+  "bad_rule_code": "E_BAD_RULE",
+  "text": "user=tok_1234 mail=a@b.com tok_9999 keepme@corp.com",
+  "whitelist": ["keepme@corp.com"],
+  "rules": [
+    {"id": "r0", "prefix": "tok_", "digits": 4},
+    {"id": "r1", "kind": "mail", "local": 3}
+  ],
+  "mask": "#"
+}</textarea>
+<div><button id="run">运行</button><span id="status" class="ok">等待</span></div>
+<pre id="out">还没跑</pre>
+<script type="module">
+import { render } from "./app.js";
+
+document.getElementById("run").addEventListener("click", function () {
+  const status = document.getElementById("status");
+  try {
+    const spec = JSON.parse(document.getElementById("input").value);
+    const result = render(spec);
+    status.className = "ok";
+    status.textContent = "完成";
+    document.getElementById("out").textContent = JSON.stringify(result, null, 1);
+  } catch (error) {
+    status.className = "bad";
+    status.textContent = "出错 " + error.message;
+    document.getElementById("out").textContent = String(error && error.stack ? error.stack : error);
+  }
+});
+</script>
+</body>
+</html>

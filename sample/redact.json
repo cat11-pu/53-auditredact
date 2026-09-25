@@ -1,0 +1,10 @@
+{
+  "bad_rule_code": "E_BAD_RULE",
+  "text": "user=tok_1234 mail=a@b.com tok_9999 keepme@corp.com",
+  "whitelist": ["keepme@corp.com"],
+  "rules": [
+    {"id": "r0", "prefix": "tok_", "digits": 4},
+    {"id": "r1", "kind": "mail", "local": 3}
+  ],
+  "mask": "#"
+}
