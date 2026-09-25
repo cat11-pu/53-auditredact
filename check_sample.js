@@ -14,8 +14,8 @@ const checked = verify(spec.text, result.text, spec.whitelist || [], spec.rules)
 const view = render(spec);
 
 emit("脱敏后的文本 =", result.text);
-emit("每条规则的命中数 =", JSON.stringify(result.hits));
-emit("白名单保留的片段 =", JSON.stringify(checked.kept));
+emit("每条规则的命中数 =", result.hits);
+emit("白名单保留的片段 =", checked.kept);
 emit("重复脱敏是否幂等 =", checked.idempotent);
 emit("长度模式是否保留 =", checked.length_preserved);
 emit("保留片段数 =", view.kept_count);
